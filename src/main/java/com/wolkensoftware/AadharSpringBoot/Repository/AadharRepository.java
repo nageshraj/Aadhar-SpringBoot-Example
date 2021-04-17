@@ -6,4 +6,6 @@ import com.wolkensoftware.AadharSpringBoot.entity.AadharEntity;
 
 public interface AadharRepository extends JpaRepository<AadharEntity, Integer> {
 
+	public AadharEntity findByName(String name);
+
 }
