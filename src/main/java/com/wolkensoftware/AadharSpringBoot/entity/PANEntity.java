@@ -31,6 +31,12 @@ public class PANEntity { // Child
 	@Column(name = "pan_number")
 	private double panNumber;
 
+	@Column(name = "pan_city")
+	private String panCity;
+
+	@Column(name = "pan_pincode")
+	private double panPincode;
+
 	@OneToOne
 	@JsonIgnoreProperties("panEntity")
 	private AadharEntity aadharEntity;

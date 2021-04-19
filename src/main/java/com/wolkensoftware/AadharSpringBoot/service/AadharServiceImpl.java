@@ -41,11 +41,17 @@ public class AadharServiceImpl implements AadharService {
 	}
 
 	@Override
-	public AadharEntity validateAndUpdatePincodeByName(int newPincode, String nameToUpdate) {
+	public boolean validateAndUpdatePincodeByName(int newPincode, String nameToUpdate) {
 
+		System.out.println("name is " + nameToUpdate);
 		AadharEntity aadharEntity = aadharRepository.findByName(nameToUpdate);
+
 		aadharEntity.setPincode(newPincode);
-		return aadharRepository.save(aadharEntity);
+		aadharEntity = aadharRepository.save(aadharEntity);
+		if (aadharEntity != null)
+			return true;
+		else
+			return false;
 	}
 
 	@Override
@@ -54,6 +60,66 @@ public class AadharServiceImpl implements AadharService {
 		aadharRepository.delete(aadharRepository.findByName(nameToDelete));
 
 		return nameToDelete + " Deleted Successfully";
+	}
+
+	@Override
+	public List<AadharEntity> validateAndGetAllByArea(String area) {
+		return aadharRepository.findByArea(area);
+
+	}
+
+	@Override
+	public int validateAndAddPersons(SaveDTO[] saveDTOs) {
+
+		int count = 0;
+
+		for (SaveDTO saveDTO : saveDTOs) {
+
+			PANEntity panEntity = panRepository.findByPanNumber(saveDTO.getPanNumber());
+
+			AadharEntity aadharEntity = new AadharEntity();
+			aadharEntity.setName(saveDTO.getName());
+			aadharEntity.setArea(saveDTO.getArea());
+			aadharEntity.setNumber(saveDTO.getNumber());
+			aadharEntity.setPincode(saveDTO.getPincode());
+			aadharEntity.setPanEntity(panEntity);
+
+			aadharRepository.save(aadharEntity);
+
+			count++;
+
+		}
+		return count;
+	}
+
+	@Override
+	public PANEntity validateAndUpdatePanCityByPanNumber(String newCity, double panNumber, double panPinCode,
+			String panName) {
+
+		PANEntity panEntity = panRepository.findByPanNumber(panNumber);
+		panEntity.setPanCity(newCity);
+		panEntity.setPanPincode(panPinCode);
+		panEntity.setPanName(panName);
+		return panRepository.save(panEntity);
+
+	}
+
+	@Override
+	public AadharEntity validateAndGetAllByAreaOrName(String name, String area) {
+
+		AadharEntity aadharEntity = aadharRepository.findByNameOrArea(name, area);
+
+		return aadharEntity;
+	}
+
+	@Override
+	public List<PANEntity> validateAndGetAllByPanNameOrPanNumberOrPanCityOrpanPincode(String panName, double panNumber,
+			String panCity, double panPincode) {
+
+		List<PANEntity> panEntities = panRepository.findByPanNameOrPanNumberOrPanCityOrPanPincode(panName, panNumber,
+				panCity, panPincode);
+
+		return panEntities;
 	}
 
 }
