@@ -3,10 +3,16 @@ package com.wolkensoftware.AadharSpringBoot.resources;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wolkensoftware.AadharSpringBoot.dto.SaveDTO;
 import com.wolkensoftware.AadharSpringBoot.entity.AadharEntity;
 import com.wolkensoftware.AadharSpringBoot.service.AadharService;
 
@@ -14,28 +20,30 @@ import com.wolkensoftware.AadharSpringBoot.service.AadharService;
 @RequestMapping("/")
 public class AadharResources {
 
+//	Logger logger = (Logger) LoggerFactory.logger(AadharResources.class);
+
 	@Autowired
 	AadharService aadharService;
 
-	@RequestMapping("/add")
-	public AadharEntity addPerson(@RequestBody AadharEntity aadharEntity) {
-		return aadharService.validateAndAddPerson(aadharEntity);
+	@PostMapping("/add")
+	public AadharEntity addPerson(@RequestBody SaveDTO saveDTO) {
+		return aadharService.validateAndAddPerson(saveDTO);
 
 	}
 
-	@RequestMapping("/get")
+	@GetMapping("/get")
 	public List<AadharEntity> getAll() {
 		return aadharService.validateAndGetAll();
 
 	}
 
-	@RequestMapping("/delete")
-	public String deleteByName(@RequestBody AadharEntity aadharEntity) {
-		return aadharService.validateAndDeleteByName(aadharEntity.getName());
+	@DeleteMapping("/delete/{name}")
+	public String deleteByName(@PathVariable String name) {
+		return aadharService.validateAndDeleteByName(name);
 
 	}
 
-	@RequestMapping("/update")
+	@PutMapping("/update")
 	public AadharEntity updatePincodeByName(@RequestBody AadharEntity aadharEntity) {
 		return aadharService.validateAndUpdatePincodeByName(aadharEntity.getPincode(), aadharEntity.getName());
 	}

@@ -2,11 +2,12 @@ package com.wolkensoftware.AadharSpringBoot.service;
 
 import java.util.List;
 
+import com.wolkensoftware.AadharSpringBoot.dto.SaveDTO;
 import com.wolkensoftware.AadharSpringBoot.entity.AadharEntity;
 
 public interface AadharService {
 
-	public AadharEntity validateAndAddPerson(AadharEntity aadharEntity);
+	public AadharEntity validateAndAddPerson(SaveDTO saveDTO);
 
 	public List<AadharEntity> validateAndGetAll();
 

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,16 +12,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
 @Entity
-@Table(name = "aadhar_details")
-public class AadharEntity { // Parent
+@Data
+@Table(name = "pan_details")
+public class PANEntity { // Child
 
 	@Id
 	@Column(name = "id")
@@ -30,21 +25,14 @@ public class AadharEntity { // Parent
 	@GenericGenerator(name = "native", strategy = "native")
 	private int id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "pan_name")
+	private String panName;
 
-	@Column(name = "pincode")
-	private int pincode;
-
-	@Column(name = "number")
-	private double number;
-
-	@Column(name = "area")
-	private String area;
+	@Column(name = "pan_number")
+	private double panNumber;
 
 	@OneToOne
-	@JoinColumn(name = "id")
-	@JsonIgnoreProperties("aadharEntity")
-	private PANEntity panEntity;
+	@JsonIgnoreProperties("panEntity")
+	private AadharEntity aadharEntity;
 
 }

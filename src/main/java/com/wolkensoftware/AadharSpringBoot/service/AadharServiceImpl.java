@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wolkensoftware.AadharSpringBoot.Repository.AadharRepository;
+import com.wolkensoftware.AadharSpringBoot.Repository.PANRepository;
+import com.wolkensoftware.AadharSpringBoot.dto.SaveDTO;
 import com.wolkensoftware.AadharSpringBoot.entity.AadharEntity;
+import com.wolkensoftware.AadharSpringBoot.entity.PANEntity;
 
 @Service
 public class AadharServiceImpl implements AadharService {
@@ -14,9 +17,21 @@ public class AadharServiceImpl implements AadharService {
 	@Autowired
 	AadharRepository aadharRepository;
 
+	@Autowired
+	PANRepository panRepository;
+
 	@Override
-	public AadharEntity validateAndAddPerson(AadharEntity aadharEntity) {
+	public AadharEntity validateAndAddPerson(SaveDTO saveDTO) {
 		System.out.println("Inside Validate");
+
+		PANEntity panEntity = panRepository.findByPanNumber(saveDTO.getPanNumber());
+		AadharEntity aadharEntity = new AadharEntity();
+		aadharEntity.setName(saveDTO.getName());
+		aadharEntity.setArea(saveDTO.getArea());
+		aadharEntity.setNumber(saveDTO.getNumber());
+		aadharEntity.setPincode(saveDTO.getPincode());
+		aadharEntity.setPanEntity(panEntity);
+
 		return aadharRepository.save(aadharEntity);
 	}
 
@@ -38,7 +53,7 @@ public class AadharServiceImpl implements AadharService {
 
 		aadharRepository.delete(aadharRepository.findByName(nameToDelete));
 
-		return nameToDelete + "Deleted Successfully";
+		return nameToDelete + " Deleted Successfully";
 	}
 
 }
