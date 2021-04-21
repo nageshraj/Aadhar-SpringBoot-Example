@@ -2,6 +2,8 @@ package com.wolkensoftware.AadharSpringBoot.resources;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +27,15 @@ public class AadharResources {
 
 //	Logger logger = (Logger) LoggerFactory.logger(AadharResources.class);
 
+	Logger logger = LoggerFactory.getLogger(AadharResources.class);
+
 	@Autowired
 	AadharService aadharService;
 
 	@PostMapping("/addPerson")
 	public ResponseEntity<AadharEntity> addPerson(@RequestBody SaveDTO saveDTO) {
+
+		logger.info("INSIDE /addPerson");
 
 		AadharEntity aadharEntity = aadharService.validateAndAddPerson(saveDTO);
 		if (aadharEntity != null)
@@ -41,6 +47,9 @@ public class AadharResources {
 
 	@PostMapping("/addPersons")
 	public ResponseEntity<Integer> addPersons(@RequestBody SaveDTO[] saveDTOs) {
+
+		logger.info("INSIDE /addPersons");
+
 		Integer count = aadharService.validateAndAddPersons(saveDTOs);
 		if (count > 0)
 			return new ResponseEntity<Integer>(count, HttpStatus.OK);
@@ -51,6 +60,9 @@ public class AadharResources {
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<AadharEntity>> getAll() {
+
+		logger.info("INSIDE /getAll");
+
 		List<AadharEntity> aadharEntities = aadharService.validateAndGetAll();
 		if (aadharEntities == null) {
 			return new ResponseEntity<List<AadharEntity>>(aadharEntities, HttpStatus.BAD_REQUEST);
@@ -63,11 +75,13 @@ public class AadharResources {
 	@GetMapping("/getAllByArea/{area}")
 	public ResponseEntity<List<AadharEntity>> getAllByArea(@PathVariable String area) {
 
+		logger.info("INSIDE /getAllByArea");
+
 		List<AadharEntity> aadharEntities = aadharService.validateAndGetAllByArea(area);
 		if (aadharEntities == null) {
 			return new ResponseEntity<List<AadharEntity>>(aadharEntities, HttpStatus.FAILED_DEPENDENCY);
 		} else {
-			return new ResponseEntity<List<AadharEntity>>(aadharEntities, HttpStatus.ACCEPTED);
+			return new ResponseEntity<List<AadharEntity>>(aadharEntities, HttpStatus.OK);
 
 		}
 
@@ -75,6 +89,9 @@ public class AadharResources {
 
 	@DeleteMapping("/deleteByName/{name}")
 	public ResponseEntity<String> deleteByName(@PathVariable String name) {
+
+		logger.info("INSIDE /deleteByName");
+
 		String message = aadharService.validateAndDeleteByName(name);
 		if (message != null) {
 			return new ResponseEntity<String>(message, HttpStatus.OK);
@@ -87,12 +104,18 @@ public class AadharResources {
 
 	@PutMapping("/updatePincodeByName/{name}/{pincode}")
 	public boolean updatePincodeByName(@PathVariable String name, @PathVariable int pincode) {
+
+		logger.info("INSIDE /updatePincodeByName");
+
 		return aadharService.validateAndUpdatePincodeByName(pincode, name);
 	}
 
 	@PutMapping("/updatePanCityByPanNumber/{panCity}&{panNumber}&{panPinCode}&{panName}")
 	public ResponseEntity<PANEntity> updatePanCityByPanNumber(@PathVariable String panCity,
 			@PathVariable double panNumber, @PathVariable double panPinCode, @PathVariable String panName) {
+
+		logger.info("INSIDE /updatePanCityByPanNumber");
+
 		PANEntity panEntity = aadharService.validateAndUpdatePanCityByPanNumber(panCity, panNumber, panPinCode,
 				panName);
 		if (panEntity != null)
@@ -105,6 +128,9 @@ public class AadharResources {
 	@GetMapping("/getAllByPincodeOrAreaOrName/{area}&{name}")
 	public ResponseEntity<AadharEntity> getAllByPincodeOrAreaOrName(@PathVariable String area,
 			@PathVariable String name) {
+
+		logger.info("INSIDE /getAllByPincodeOrAreaOrName");
+
 		AadharEntity aadharEntity = aadharService.validateAndGetAllByAreaOrName(name, area);
 		if (aadharEntity != null)
 			return new ResponseEntity<AadharEntity>(aadharEntity, HttpStatus.OK);
@@ -116,6 +142,9 @@ public class AadharResources {
 	@GetMapping("/getAllByPanNameOrPanNumberOrPanCityOrpanPincode/{panName}&{panNumber}&{panCity}&{panPincode}")
 	public ResponseEntity<List<PANEntity>> getAllByPanNameOrPanNumberOrPanCityOrpanPincode(@PathVariable String panName,
 			@PathVariable double panNumber, @PathVariable String panCity, @PathVariable double panPincode) {
+
+		logger.info("INSIDE /getAllByPanNameOrPanNumberOrPanCityOrpanPincode");
+
 		List<PANEntity> panEntities = aadharService.validateAndGetAllByPanNameOrPanNumberOrPanCityOrpanPincode(panName,
 				panNumber, panCity, panPincode);
 		if (panEntities != null)

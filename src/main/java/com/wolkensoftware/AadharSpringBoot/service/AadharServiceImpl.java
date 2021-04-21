@@ -2,6 +2,8 @@ package com.wolkensoftware.AadharSpringBoot.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,12 @@ public class AadharServiceImpl implements AadharService {
 	@Autowired
 	PANRepository panRepository;
 
+	Logger logger = LoggerFactory.getLogger(AadharServiceImpl.class);
+
 	@Override
 	public AadharEntity validateAndAddPerson(SaveDTO saveDTO) {
-		System.out.println("Inside Validate");
+
+		logger.info("INSIDE validateAndAddPerson()");
 
 		PANEntity panEntity = panRepository.findByPanNumber(saveDTO.getPanNumber());
 		AadharEntity aadharEntity = new AadharEntity();
@@ -37,11 +42,16 @@ public class AadharServiceImpl implements AadharService {
 
 	@Override
 	public List<AadharEntity> validateAndGetAll() {
+
+		logger.info("INSIDE validateAndGetAll()");
+
 		return aadharRepository.findAll();
 	}
 
 	@Override
 	public boolean validateAndUpdatePincodeByName(int newPincode, String nameToUpdate) {
+
+		logger.info("INSIDE validateAndUpdatePincodeByName()");
 
 		System.out.println("name is " + nameToUpdate);
 		AadharEntity aadharEntity = aadharRepository.findByName(nameToUpdate);
@@ -57,6 +67,8 @@ public class AadharServiceImpl implements AadharService {
 	@Override
 	public String validateAndDeleteByName(String nameToDelete) {
 
+		logger.info("INSIDE validateAndDeleteByName()");
+
 		aadharRepository.delete(aadharRepository.findByName(nameToDelete));
 
 		return nameToDelete + " Deleted Successfully";
@@ -64,12 +76,17 @@ public class AadharServiceImpl implements AadharService {
 
 	@Override
 	public List<AadharEntity> validateAndGetAllByArea(String area) {
+
+		logger.info("INSIDE validateAndGetAllByArea()");
+
 		return aadharRepository.findByArea(area);
 
 	}
 
 	@Override
 	public int validateAndAddPersons(SaveDTO[] saveDTOs) {
+
+		logger.info("INSIDE validateAndAddPersons()");
 
 		int count = 0;
 
@@ -96,6 +113,8 @@ public class AadharServiceImpl implements AadharService {
 	public PANEntity validateAndUpdatePanCityByPanNumber(String newCity, double panNumber, double panPinCode,
 			String panName) {
 
+		logger.info("INSIDE validateAndUpdatePanCityByPanNumber()");
+
 		PANEntity panEntity = panRepository.findByPanNumber(panNumber);
 		panEntity.setPanCity(newCity);
 		panEntity.setPanPincode(panPinCode);
@@ -107,6 +126,8 @@ public class AadharServiceImpl implements AadharService {
 	@Override
 	public AadharEntity validateAndGetAllByAreaOrName(String name, String area) {
 
+		logger.info("INSIDE validateAndGetAllByAreaOrName()");
+
 		AadharEntity aadharEntity = aadharRepository.findByNameOrArea(name, area);
 
 		return aadharEntity;
@@ -115,6 +136,8 @@ public class AadharServiceImpl implements AadharService {
 	@Override
 	public List<PANEntity> validateAndGetAllByPanNameOrPanNumberOrPanCityOrpanPincode(String panName, double panNumber,
 			String panCity, double panPincode) {
+
+		logger.info("INSIDE validateAndGetAllByPanNameOrPanNumberOrPanCityOrpanPincode()");
 
 		List<PANEntity> panEntities = panRepository.findByPanNameOrPanNumberOrPanCityOrPanPincode(panName, panNumber,
 				panCity, panPincode);
